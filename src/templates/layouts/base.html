@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+        <style>
+            html, body {
+                height: 100%;
+            }
+            #wrap {
+                min-height: 100%;
+            }
+
+            #main {
+                overflow:auto;
+                padding-bottom:40px; /* this needs to be bigger than footer height*/
+            }
+
+            .footer {
+                position: relative;
+                margin-top: -40px; /* negative value of footer height */
+                clear:both;
+            }
+            .bg-custom {
+                background-color: #9e1b27 !important;
+            }
+            .text-custom {
+                color: #9e1b27 !important;
+            }
+        </style>
+
+        <title>{% block title %}Pizza App{% endblock %}</title>
+    </head>
+    <body>
+        <div id="wrap">
+            {% include 'layouts/partial/navbar.html' %}
+            <div id="main" class="container">
+                {% block context %}
+                {% endblock %}
+            </div>
+        </div>
+        {% include 'layouts/partial/footer.html' %}
+
+        <!-- Optional JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+        {% block js %}
+        {% endblock %}
+    </body>
+</html>

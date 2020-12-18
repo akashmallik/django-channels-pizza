@@ -1,0 +1,60 @@
+{% extends "layouts/base.html" %}
+{% load humanize %}
+
+{% block title %}Pizza App | Order - {{ order.order_id }}{% endblock %}
+
+{% block context %}
+<section>
+    <h3>Order id - #{{ order.order_id }}</h3>
+    <p>Amount - &#2547; {{ order.amount }}</p>
+    <span class="badge bg-custom mb-2" id="status"></span>
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-custom" role="progressbar"
+            style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script>
+    let protocol = "ws://";
+    let order_id = '{{ order.order_id }}';
+
+    if (window.location.protocol == "https:") {
+        protocol = "wss://";
+    }
+
+    let socket = new WebSocket(
+        protocol + window.location.host + '/ws/pizza/' + order_id + '/'
+    );
+
+    socket.onopen = function (e) {
+        console.log('Connection established');
+    };
+
+    socket.onmessage = function (e) {
+        var data = JSON.parse(e.data)
+        var value = data.payload.progress
+        console.log(data)
+        increaseProgress(value, data.payload.status)
+    };
+    socket.onclose = function (e) {
+        console.log('Connection closed');
+    };
+
+    function increaseProgress(value, status) {
+
+        var status_html = document.querySelector('#status')
+        var progress = document.querySelector('.progress-bar')
+
+        if (value == 100) {
+            progress.classList.add('bg-success');
+        } else {
+            progress.classList.remove('bg-success');
+        }
+
+        status_html.innerHTML = status;
+        progress.style.width = value + "%";
+    }
+</script>
+{% endblock %}
